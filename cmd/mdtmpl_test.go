@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FalcoSuessgott/mkdgo/pkg/parser"
+	"github.com/FalcoSuessgott/mdtmpl/pkg/parser"
 	"github.com/stretchr/testify/require"
 )
 

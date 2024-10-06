@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/FalcoSuessgott/mkdgo/cmd"
+	"github.com/FalcoSuessgott/mdtmpl/cmd"
 )
 
 var version string

@@ -69,3 +69,15 @@ Flags:
   -t, --template string   path to a mdtmpl template file (env: MDTMPL_TEMPLATE_FILE) (default "README.md.tmpl")
       --version           print version (env: MDTMPL_VERSION)
 ```
+
+## pre-commit hook
+Add the following config to your `.pre-commit-config.yaml` file and adjust the `args` to your need:
+
+```yaml
+repos:
+  - repo: https://github.com/FalcoSuessgott/mdtmpl
+    rev: v0.0.2
+    hooks:
+      - id: mdtmpl
+        args: [-t=README.md.tmpl, -f, -o=README.md]
+```

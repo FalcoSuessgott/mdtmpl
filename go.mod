@@ -1,4 +1,4 @@
-module github.com/FalcoSuessgott/mkdgo
+module github.com/FalcoSuessgott/mdtmpl
 
 go 1.22.6
 

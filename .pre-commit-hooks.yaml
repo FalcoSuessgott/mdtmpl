@@ -1,0 +1,7 @@
+- id: mdtmpl
+  name: Template Markdown files
+  description: Template Markdown files using mdtmpl
+  entry: mdtmpl
+  language: golang
+  files: (\.tmpl)$
+  pass_filenames: false

@@ -7,7 +7,7 @@ import (
 	"io"
 	"regexp"
 
-	"github.com/FalcoSuessgott/mkdgo/pkg/template"
+	"github.com/FalcoSuessgott/mdtmpl/pkg/template"
 )
 
 const commentRegex = `<!---\s*(.*?)\s*--->`

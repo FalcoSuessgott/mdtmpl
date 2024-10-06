@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/FalcoSuessgott/mkdgo/pkg/parser"
+	"github.com/FalcoSuessgott/mdtmpl/pkg/parser"
 	"github.com/caarlos0/env/v11"
 	"github.com/spf13/cobra"
 )
