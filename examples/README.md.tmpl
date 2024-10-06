@@ -1,0 +1,22 @@
+# mktmpl
+This is an example `README.md.tmpl` showing the features of `mktmpl`.
+
+## file & codeblocks
+> You can include any files and wrap it in a code block `{{ file "examples/cfg.yml" | code "yml" }}`:
+<!--- {{ file "examples/cfg.yml" | code "yml" }} --->
+
+## exec
+> You can run any commands `{{ exec "echo hallo" | code "bash" }}`:
+<!--- {{ exec "echo hallo" | truncate | code "bash" }} --->
+
+## sprig
+> You can use all the functions from [sprig](https://masterminds.github.io/sprig/) and pipe them together `{{ "hello!" | upper | repeat 5 }}`:
+<!--- {{ "hello!" | upper | repeat 5 }} --->
+
+## template
+> You can include other templates `{{ tmpl "examples/template.tmpl" }}`:
+<!--- {{ tmpl "examples/template.tmpl" }} --->
+
+## template with vars
+> You can include other templates `{{ tmplWithVars "examples/templateWithVars.tmpl" "version=v1.0.0" "name=kuberbernetes" }}`:
+<!--- {{ tmplWithVars "examples/templateWithVars.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->

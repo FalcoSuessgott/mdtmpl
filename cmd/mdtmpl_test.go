@@ -8,6 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+//nolint:funlen
 func TestParseConfig(t *testing.T) {
 	testCases := []struct {
 		name string
@@ -40,6 +41,22 @@ settings:
   cfg: true
 
 ` + "```\n",
+		},
+		{
+			name: "tmpl",
+			tmpl: `<!--- {{ tmpl "testdata/tmpl.tmpl" }} --->`,
+			exp: `<!--- {{ tmpl "testdata/tmpl.tmpl" }} --->
+This is a test template
+
+`,
+		},
+		{
+			name: "tmplWithVars",
+			tmpl: `<!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->`,
+			exp: `<!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->
+This is another template kuberbernetes-v1.0.0
+
+`,
 		},
 	}
 

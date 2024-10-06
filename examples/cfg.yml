@@ -1,0 +1,6 @@
+config:
+  tool: mdtmpl
+  files:
+    - examples/cfg.yml
+    - examples/complete.tmpl
+    - examples/README.md

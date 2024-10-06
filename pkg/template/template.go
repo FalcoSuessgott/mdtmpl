@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 	"text/template"
 
 	"github.com/Masterminds/sprig/v3"
@@ -38,24 +39,75 @@ var funcMap template.FuncMap = map[string]any{
 	"code": func(language, content string) string {
 		return fmt.Sprintf("```%s\n%s\n```", language, content)
 	},
-	"inlineCode": func(content string) string {
-		return fmt.Sprintf("`%s`", content)
-	},
+	"truncate": strings.TrimSpace,
 }
 
 // Render renders the given content using the sprig template functions.
-func Render(content []byte) (bytes.Buffer, error) {
+// nolint: funlen, cyclop
+func Render(content []byte, vars interface{}) (bytes.Buffer, error) {
 	var buf bytes.Buffer
 
 	tpl, err := template.New("template").
 		Option("missingkey=error").
-		Funcs(sprig.FuncMap()).Funcs(funcMap).
+		Funcs(sprig.FuncMap()).Funcs(funcMap).Funcs(template.FuncMap{
+		// we define tmpl here so we dont have a cyclic dependency
+		"tmpl": func(file string) (string, error) {
+			f, err := os.Open(file)
+			if err != nil {
+				return "", err
+			}
+
+			b, err := io.ReadAll(f)
+			if err != nil {
+				return "", err
+			}
+
+			res, err := Render(b, nil)
+			if err != nil {
+				return "", fmt.Errorf("failed to render template: %w", err)
+			}
+
+			return res.String(), nil
+		},
+		"tmplWithVars": func(file string, vars ...string) (string, error) {
+			f, err := os.Open(file)
+			if err != nil {
+				return "", err
+			}
+
+			b, err := io.ReadAll(f)
+			if err != nil {
+				return "", err
+			}
+
+			m := map[string]interface{}{}
+
+			for _, s := range vars {
+				parts := strings.Split(s, "=")
+				//nolint: mnd
+				if len(parts) != 2 {
+					return "", fmt.Errorf("invalid variable format: %s", s)
+				}
+
+				m[parts[0]] = parts[1]
+			}
+
+			fmt.Println("dd", m)
+
+			res, err := Render(b, m)
+			if err != nil {
+				return "", fmt.Errorf("failed to render template: %w", err)
+			}
+
+			return res.String(), nil
+		},
+	}).
 		Parse(string(content))
 	if err != nil {
 		return buf, err
 	}
 
-	if err := tpl.Execute(&buf, nil); err != nil {
+	if err := tpl.Execute(&buf, vars); err != nil {
 		return buf, err
 	}
 
