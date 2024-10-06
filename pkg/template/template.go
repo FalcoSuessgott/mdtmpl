@@ -38,6 +38,9 @@ var funcMap template.FuncMap = map[string]any{
 	"code": func(language, content string) string {
 		return fmt.Sprintf("```%s\n%s\n```", language, content)
 	},
+	"inlineCode": func(content string) string {
+		return fmt.Sprintf("`%s`", content)
+	},
 }
 
 // Render renders the given content using the sprig template functions.

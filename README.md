@@ -4,8 +4,9 @@ Tired of copy-pasting your example configurations into your README? `mdtmpl` is 
 
 `mdtmpl` ships with the [default Go-Template functions](https://pkg.go.dev/text/template#hdr-Functions),[sprig](http://masterminds.github.io/sprig/) and some useful functions for building README files such as:
 
-* `{{ code <highlighting> }}`: which will wrap the result of an instruction in a code block and the specified syntax highlighting.
-* `{{ exec "echo hello world" }}`: executes the given command and returns its output
+* `{{ code <highlighting> <content> }}`: which will wrap the given content in a code block using the specified syntax highlighting
+* `{{ inline <content> }}`: which will wrap the given content in an inline code block (e.g `` `ps aux` ``)
+* `{{ exec <command> }}`: executes the given command and returns its output
 
 You can also pipe the output of one instruction to the next one as its last parameter:
 
