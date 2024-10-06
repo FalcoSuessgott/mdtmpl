@@ -16,12 +16,14 @@ const (
 	defaultOutputFile   = "README.md"
 )
 
+var Version string
+
 type Options struct {
-	TemplateFile string
-	OutputFile   string
-	DryRun       bool
-	Force        bool
-	Version      bool
+	TemplateFile string `env:"TEMPLATE_FILE"`
+	OutputFile   string `env:"OUTPUT_FILE"`
+	DryRun       bool   `env:"DRY_RUN"`
+	Force        bool   `env:"FORCE"`
+	Version      bool   `env:"VERSION"`
 }
 
 func defaultOpts() *Options {
@@ -40,10 +42,16 @@ func NewRootCmd() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:           "mdtmpl",
-		Short:         "mdtmpl is a tool to render markdown templates",
+		Short:         "template  Markdown files using Go templates and Markdown comments",
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		RunE: func(cmd *cobra.Command, args []string) error {
+			if o.Version {
+				fmt.Println(Version)
+
+				return nil
+			}
+
 			f, err := os.Open(o.TemplateFile)
 			if err != nil {
 				return fmt.Errorf("cannot open \"%s\": %w", o.TemplateFile, err)
@@ -77,12 +85,11 @@ func NewRootCmd() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().StringVarP(&o.TemplateFile, "template", "t", o.TemplateFile, "path to a mdtmpl template file")
-	cmd.Flags().StringVarP(&o.OutputFile, "output", "o", o.OutputFile, "path to the output file")
-
-	cmd.Flags().BoolVarP(&o.Force, "force", "f", o.Force, "overwrite output file")
-	cmd.Flags().BoolVarP(&o.DryRun, "dry-run", "d", o.DryRun, "dry run, print output to stdout")
-	cmd.Flags().BoolVar(&o.Version, "version", o.Version, "print version")
+	cmd.Flags().StringVarP(&o.TemplateFile, "template", "t", o.TemplateFile, "path to a mdtmpl template file (env: MDTMPL_TEMPLATE_FILE)")
+	cmd.Flags().StringVarP(&o.OutputFile, "output", "o", o.OutputFile, "path to the output file (env: MDTMPL_OUTPUT_FILE)")
+	cmd.Flags().BoolVarP(&o.Force, "force", "f", o.Force, "overwrite output file (env: MDTMPL_FORCE)")
+	cmd.Flags().BoolVarP(&o.DryRun, "dry-run", "d", o.DryRun, "dry run, print output to stdout (env: MDTMPL_DRY_RUN)")
+	cmd.Flags().BoolVar(&o.Version, "version", o.Version, "print version (env: MDTMPL_VERSION)")
 
 	return cmd
 }

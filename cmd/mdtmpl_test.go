@@ -38,6 +38,7 @@ hallo
 			exp: `<!--- {{ file "testdata/cfg.yml" | code "yml" }} --->` + "\n```yml" + `
 settings:
   cfg: true
+
 ` + "```\n",
 		},
 	}

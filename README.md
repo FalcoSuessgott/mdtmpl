@@ -41,3 +41,31 @@ You can start the installation by running `make start`
 ```bash
 [...]
 ```
+
+# Installation
+Find all releases [here](https://github.com/FalcoSuessgott/mdtmpl/releases) or simply download the latest by running:
+
+```bash
+version=$(curl https://api.github.com/repos/falcosuessgott/mdtmpl/releases/latest -s | jq .name -r)
+curl -OL "https://github.com/FalcoSuessgott/mdtmpl/releases/download/${version}/mdtmpl_$(uname)_$(uname -m).tar.gz"
+tar xzf mdtmpl_$(uname)_$(uname -m).tar.gz
+chmod u+x mdtmpl
+./mdtmpl version
+```
+
+# Usage
+```bash
+$> mdtmpl -h
+template  Markdown files using Go templates and Markdown comments
+
+Usage:
+  mdtmpl [flags]
+
+Flags:
+  -d, --dry-run           dry run, print output to stdout (env: MDTMPL_DRY_RUN)
+  -f, --force             overwrite output file (env: MDTMPL_FORCE)
+  -h, --help              help for mdtmpl
+  -o, --output string     path to the output file (env: MDTMPL_OUTPUT_FILE) (default "README.md")
+  -t, --template string   path to a mdtmpl template file (env: MDTMPL_TEMPLATE_FILE) (default "README.md.tmpl")
+      --version           print version (env: MDTMPL_VERSION)
+```
