@@ -80,7 +80,7 @@ Add the following config to your `.pre-commit-config.yaml` file and adjust the `
 ```yaml
 repos:
   - repo: https://github.com/FalcoSuessgott/mdtmpl
-    rev: v0.0.2
+    rev: v0.0.3
     hooks:
       - id: mdtmpl
         args: [-t=README.md.tmpl, -f, -o=README.md]
