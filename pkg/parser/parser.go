@@ -27,7 +27,7 @@ func Parse(r io.Reader) ([]byte, error) {
 
 			b := parseInstruction(scanner.Text())
 
-			result, err := template.Render([]byte(b))
+			result, err := template.Render([]byte(b), nil)
 			if err != nil {
 				return nil, fmt.Errorf("cannot render template at line %d: %w", ln, err)
 			}

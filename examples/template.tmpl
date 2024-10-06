@@ -1,0 +1,6 @@
+repos:
+  - repo: https://github.com/FalcoSuessgott/mdtmpl
+    rev: {{ exec "git describe --tags --abbrev=0" | truncate |  }}
+    hooks:
+      - id: mdtmpl
+        args: [-t=README.md.tmpl, -f, -o=README.md]

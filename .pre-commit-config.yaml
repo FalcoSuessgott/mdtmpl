@@ -19,4 +19,4 @@ repos:
     rev: v0.0.2
     hooks:
       - id: mdtmpl
-        args: [-t=examples/complete/complete.tmpl, -f, -o=examples/complete/README.md]
+        args: [-t=examples/README.md.tmpl, -f, -o=examples/README.md]

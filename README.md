@@ -5,12 +5,15 @@ Tired of copy-pasting your example configurations into your README? `mdtmpl` is 
 `mdtmpl` ships with the [default Go-Template functions](https://pkg.go.dev/text/template#hdr-Functions),[sprig](http://masterminds.github.io/sprig/) and some useful functions for building README files such as:
 
 * `{{ code <highlighting> <content> }}`: which will wrap the given content in a code block using the specified syntax highlighting
-* `{{ inline <content> }}`: which will wrap the given content in an inline code block (e.g `` `ps aux` ``)
 * `{{ exec <command> }}`: executes the given command and returns its output
+* `{{ tmpl <template-file> }}`: to include and render another template file
+* `{{ tmplWithVars <template-file> <vars>}}`: to include and render another template file with additional vars in the form of  `<key>=<value>`
 
 You can also pipe the output of one instruction to the next one as its last parameter:
 
 `<!--- {{ "hello!" | upper | repeat 5 }} --->` translates to `HELLO!HELLO!HELLO!HELLO!HELLO!`
+
+You can find a comprehensive example [here](https://github.com/FalcoSuessgott/mdtmpl/tree/main/examples) and its [`README.md.tmpl`](https://github.com/FalcoSuessgott/mdtmpl/tree/main/examples/README.md.tmpl)
 
 ## Example
 Imagine the following `README.md.tmpl` that contains a Markdown comment `{{ file "config.yml" | code "yml" }}`, telling `mdtmpl` to include the content of `config.yml` and wrap it in a code block (`` ``` ``) using `YAML` syntax highlighting:
