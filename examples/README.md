@@ -31,7 +31,7 @@ HELLO!HELLO!HELLO!HELLO!HELLO!
 <!--- {{ tmpl "examples/template.tmpl" }} --->
 repos:
   - repo: https://github.com/FalcoSuessgott/mdtmpl
-    rev: v0.0.3
+    rev: v0.0.4
     hooks:
       - id: mdtmpl
         args: [-t=README.md.tmpl, -f, -o=README.md]
@@ -41,4 +41,3 @@ repos:
 > You can include other templates `{{ tmplWithVars "examples/templateWithVars.tmpl" "version=v1.0.0" "name=kuberbernetes" }}`:
 <!--- {{ tmplWithVars "examples/templateWithVars.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->
 This is another template kuberbernetes-v1.0.0
-
