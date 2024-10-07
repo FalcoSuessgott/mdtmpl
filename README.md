@@ -9,7 +9,7 @@ Tired of copy-pasting your example configurations or bumping hardcoded versions 
 * `{{ code "<highlighting>" "<content>" }}`: which will wrap the given content in a code block using the specified syntax highlighting
 * `{{ exec "<command>" }}`: executes the given command and returns its output
 * `{{ tmpl "<template-file>" }}`: to include and render another template file
-* `{{ tmplWithVars "<template-file>" "<key>=<value>" "<key>=<value>"}}`: to include and render another template file with additional vars  in the form of  `<key>=<value>`
+* `{{ tmplWithVars "<template-file>" "<key>=<value>" "<key>=<value>"}}`: to include and render another template file with additional vars in the form of  `<key>=<value>`
 * `{{ conventionalCommitBump }}`: will result to the next semantic version according to the latest git commit message.
 
 You can also pipe the output of one instruction to the next one as its last parameter:
@@ -82,14 +82,14 @@ Flags:
 ```
 
 # pre-commit hook
-Add the following config to your `.pre-commit-config.yaml` file and adjust the `args` to your need:
-<!--- {{ tmpl "docs/pre-commit.tmpl" | code "yaml" }} --->
+Add the following config to your `.pre-commit-config.yaml` file and adjust the `args` to your needs.
+Mae sure to run `pre-commit install` and `pre-commit autoupdate` to stay on the last version:
+<!--- {{ tmpl "docs/pre-commit.tmpl" | truncate | code "yaml" }} --->
 ```yaml
 repos:
   - repo: https://github.com/FalcoSuessgott/mdtmpl
-    rev: v0.0.4
+    rev: v0.1.0
     hooks:
       - id: mdtmpl
         args: [-t=README.md.tmpl, -f, -o=README.md]
-
 ```

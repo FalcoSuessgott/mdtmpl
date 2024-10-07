@@ -8,6 +8,7 @@ Tired of copy-pasting your example configurations or bumping hardcoded versions 
 * `{{ exec "<command>" }}`: executes the given command and returns its output
 * `{{ tmpl "<template-file>" }}`: to include and render another template file
 * `{{ tmplWithVars "<template-file>" "<key>=<value>" "<key>=<value>"}}`: to include and render another template file with additional vars in the form of  `<key>=<value>`
+* `{{ conventionalCommitBump }}`: will result to the next semantic version according to the latest git commit message.
 
 You can also pipe the output of one instruction to the next one as its last parameter:
 

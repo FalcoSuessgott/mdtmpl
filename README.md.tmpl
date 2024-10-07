@@ -16,5 +16,6 @@ chmod u+x mdtmpl
 <!--- {{ exec "echo \"$> mdtmpl -h\" && go run main.go -h" | truncate | code "bash" }} --->
 
 # pre-commit hook
-Add the following config to your `.pre-commit-config.yaml` file and adjust the `args` to your need:
-<!--- {{ tmpl "docs/pre-commit.tmpl" | code "yaml" }} --->
+Add the following config to your `.pre-commit-config.yaml` file and adjust the `args` to your needs.
+Mae sure to run `pre-commit install` and `pre-commit autoupdate` to stay on the last version:
+<!--- {{ tmpl "docs/pre-commit.tmpl" | truncate | code "yaml" }} --->
