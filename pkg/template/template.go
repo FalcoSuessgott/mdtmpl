@@ -9,7 +9,14 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/FalcoSuessgott/mdtmpl/pkg/commit"
+	"github.com/Masterminds/semver/v3"
 	"github.com/Masterminds/sprig/v3"
+)
+
+const (
+	gitCommitMsgFile    = ".git/COMMIT_EDITMSG"
+	gitLatestTagCommand = "git describe --tags --abbrev=0"
 )
 
 var funcMap template.FuncMap = map[string]any{
@@ -38,6 +45,41 @@ var funcMap template.FuncMap = map[string]any{
 	},
 	"code": func(language, content string) string {
 		return fmt.Sprintf("```%s\n%s\n```", language, content)
+	},
+	"conventionalCommitBump": func() (string, error) {
+		f, err := os.Open(gitCommitMsgFile)
+		if err != nil {
+			return "", err
+		}
+
+		b, err := io.ReadAll(f)
+		if err != nil {
+			return "", err
+		}
+
+		cmd := strings.Split(gitLatestTagCommand, " ")
+		//nolint: gosec
+		version, err := exec.Command(cmd[0], cmd[1:]...).Output()
+		if err != nil {
+			return "", fmt.Errorf("failed to get latest tag: %w", err)
+		}
+
+		semverF, err := commit.ParseConventionalCommit(bytes.TrimSpace(b))
+		if err != nil {
+			return "", fmt.Errorf("failed to parse commit as conventional: %w", err)
+		}
+
+		sv, err := semver.NewVersion(string(bytes.TrimSpace(version)))
+		if err != nil {
+			return "", fmt.Errorf("failed to parse version as semantic version: %w", err)
+		}
+
+		v := semverF(sv)
+		if bytes.HasPrefix(version, []byte("v")) {
+			v = "v" + v
+		}
+
+		return v, nil
 	},
 	"truncate": strings.TrimSpace,
 }
