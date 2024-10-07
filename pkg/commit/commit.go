@@ -1,7 +1,7 @@
 package commit
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/leodido/go-conventionalcommits"
@@ -36,5 +36,5 @@ func ParseConventionalCommit(commit []byte) (SemVerFunc, error) {
 		return IncPatch, nil
 	}
 
-	return nil, fmt.Errorf("commit is not a conventional commit")
+	return nil, errors.New("commit is not a conventional commit")
 }

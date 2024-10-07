@@ -9,7 +9,8 @@ Tired of copy-pasting your example configurations or bumping hardcoded versions 
 * `{{ code "<highlighting>" "<content>" }}`: which will wrap the given content in a code block using the specified syntax highlighting
 * `{{ exec "<command>" }}`: executes the given command and returns its output
 * `{{ tmpl "<template-file>" }}`: to include and render another template file
-* `{{ tmplWithVars "<template-file>" "<key>=<value>" "<key>=<value>"}}`: to include and render another template file with additional vars in the form of  `<key>=<value>`
+* `{{ tmplWithVars "<template-file>" "<key>=<value>" "<key>=<value>"}}`: to include and render another template file with additional vars  in the form of  `<key>=<value>`
+* `{{ conventionalCommitBump }}`: will result to the next semantic version according to the latest git commit message.
 
 You can also pipe the output of one instruction to the next one as its last parameter:
 
@@ -66,7 +67,6 @@ chmod u+x mdtmpl
 <!--- {{ exec "echo \"$> mdtmpl -h\" && go run main.go -h" | truncate | code "bash" }} --->
 ```bash
 $> mdtmpl -h
-args [/var/folders/2z/y2_t8zgj32qfwps5ngjg8jnm0000gn/T/go-build3325075689/b001/exe/main -h]
 template  Markdown files using Go templates and Markdown comments
 
 Usage:

@@ -22,5 +22,6 @@ This is an example `README.md.tmpl` showing the features of `mktmpl`.
 <!--- {{ tmplWithVars "examples/templateWithVars.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->
 
 ## bump versions based on the latest commit message
-> The next version according to the latest commit message is `{{ exec "git log -1 --pretty=%B | bump" }}`:
-<!--- {{ exec "git describe --tags --abbrev=0" | truncate | conventionalCommitBump }} --->
+> The template func `conventionalCommitBump` allows you to bump a specified version by using the latest git tag & commit message.
+`mdtmpl` will read the latest commit message from `.git/COMMIT_EDITMSG` parse it to a convetional commit and then return the next semantic version based on the latest git tag: `{{ conventionalCommitBump }}`:
+<!--- {{ conventionalCommitBump }} --->

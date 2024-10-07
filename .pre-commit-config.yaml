@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -21,7 +21,6 @@ repos:
       # example
       - id: mdtmpl
         args: [-t=examples/README.md.tmpl, -f, -o=examples/README.md]
-        stages: [commit-msg]
       # readme
       - id: mdtmpl
         args: [-f]
