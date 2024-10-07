@@ -25,12 +25,11 @@ HELLO!HELLO!HELLO!HELLO!HELLO!
 		},
 		{
 			name: "exec",
-			tmpl: `<!--- {{ exec "echo hallo" | repeat 3 }} --->`,
-			exp: `<!--- {{ exec "echo hallo" | repeat 3 }} --->
+			tmpl: `<!--- {{ exec "echo hallo" | repeat 3 | truncate }} --->`,
+			exp: `<!--- {{ exec "echo hallo" | repeat 3 | truncate }} --->
 hallo
 hallo
 hallo
-
 `,
 		},
 		{
@@ -44,18 +43,16 @@ settings:
 		},
 		{
 			name: "tmpl",
-			tmpl: `<!--- {{ tmpl "testdata/tmpl.tmpl" }} --->`,
-			exp: `<!--- {{ tmpl "testdata/tmpl.tmpl" }} --->
+			tmpl: `<!--- {{ tmpl "testdata/tmpl.tmpl" | truncate }} --->`,
+			exp: `<!--- {{ tmpl "testdata/tmpl.tmpl" | truncate }} --->
 This is a test template
-
 `,
 		},
 		{
 			name: "tmplWithVars",
-			tmpl: `<!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->`,
-			exp: `<!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->
+			tmpl: `<!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" | truncate }} --->`,
+			exp: `<!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" | truncate }} --->
 This is another template kuberbernetes-v1.0.0
-
 `,
 		},
 	}

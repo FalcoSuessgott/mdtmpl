@@ -92,8 +92,6 @@ func Render(content []byte, vars interface{}) (bytes.Buffer, error) {
 				m[parts[0]] = parts[1]
 			}
 
-			fmt.Println("dd", m)
-
 			res, err := Render(b, m)
 			if err != nil {
 				return "", fmt.Errorf("failed to render template: %w", err)

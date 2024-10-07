@@ -1,5 +1,3 @@
-# mdtmpl
-<!--- {{ file "docs/intro.tmpl" }} --->
 Tired of copy-pasting your example configurations or bumping hardcoded versions in your README?
 
 `mdtmpl` is a dead-simple little Go CLI tool that runs instructions defined in Markdown comments (e.g: `<!--- {{ my markdown comment }} --->`).
@@ -48,47 +46,4 @@ You can start the installation by running `make start`
 <!--- {{ exec "make start" | code "bash" }} --->
 ```bash
 [...]
-```
-
-
-# Installation
-Find all releases [here](https://github.com/FalcoSuessgott/mdtmpl/releases) or simply download the latest by running:
-
-```bash
-version=$(curl https://api.github.com/repos/falcosuessgott/mdtmpl/releases/latest -s | jq .name -r)
-curl -OL "https://github.com/FalcoSuessgott/mdtmpl/releases/download/${version}/mdtmpl_$(uname)_$(uname -m).tar.gz"
-tar xzf mdtmpl_$(uname)_$(uname -m).tar.gz
-chmod u+x mdtmpl
-./mdtmpl version
-```
-
-# Usage
-<!--- {{ exec "echo \"$> mdtmpl -h\" && go run main.go -h" | truncate | code "bash" }} --->
-```bash
-$> mdtmpl -h
-template  Markdown files using Go templates and Markdown comments
-
-Usage:
-  mdtmpl [flags]
-
-Flags:
-  -d, --dry-run           dry run, print output to stdout (env: MDTMPL_DRY_RUN)
-  -f, --force             overwrite output file (env: MDTMPL_FORCE)
-  -h, --help              help for mdtmpl
-  -o, --output string     path to the output file (env: MDTMPL_OUTPUT_FILE) (default "README.md")
-  -t, --template string   path to a mdtmpl template file (env: MDTMPL_TEMPLATE_FILE) (default "README.md.tmpl")
-      --version           print version (env: MDTMPL_VERSION)
-```
-
-# pre-commit hook
-Add the following config to your `.pre-commit-config.yaml` file and adjust the `args` to your need:
-<!--- {{ tmpl "docs/pre-commit.tmpl" | code "yaml" }} --->
-```yaml
-repos:
-  - repo: https://github.com/FalcoSuessgott/mdtmpl
-    rev: v0.0.3
-    hooks:
-      - id: mdtmpl
-        args: [-t=README.md.tmpl, -f, -o=README.md]
-
 ```
