@@ -66,6 +66,7 @@ chmod u+x mdtmpl
 <!--- {{ exec "echo \"$> mdtmpl -h\" && go run main.go -h" | truncate | code "bash" }} --->
 ```bash
 $> mdtmpl -h
+args [/var/folders/2z/y2_t8zgj32qfwps5ngjg8jnm0000gn/T/go-build3325075689/b001/exe/main -h]
 template  Markdown files using Go templates and Markdown comments
 
 Usage:

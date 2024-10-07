@@ -20,3 +20,7 @@ This is an example `README.md.tmpl` showing the features of `mktmpl`.
 ## template with vars
 > You can include other templates `{{ tmplWithVars "examples/templateWithVars.tmpl" "version=v1.0.0" "name=kuberbernetes" }}`:
 <!--- {{ tmplWithVars "examples/templateWithVars.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->
+
+## bump versions based on the latest commit message
+> The next version according to the latest commit message is `{{ exec "git log -1 --pretty=%B | bump" }}`:
+<!--- {{ exec "git describe --tags --abbrev=0" | truncate | conventionalCommitBump }} --->

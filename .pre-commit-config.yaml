@@ -21,6 +21,8 @@ repos:
       # example
       - id: mdtmpl
         args: [-t=examples/README.md.tmpl, -f, -o=examples/README.md]
+        stages: [commit-msg]
       # readme
       - id: mdtmpl
         args: [-f]
+        stages: [commit-msg]

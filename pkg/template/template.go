@@ -9,8 +9,12 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/FalcoSuessgott/mdtmpl/pkg/commit"
+	"github.com/Masterminds/semver/v3"
 	"github.com/Masterminds/sprig/v3"
 )
+
+const gitCommitMsgFile = ".git/COMMIT_EDITMSG"
 
 var funcMap template.FuncMap = map[string]any{
 	"file": func(file string) (string, error) {
@@ -38,6 +42,29 @@ var funcMap template.FuncMap = map[string]any{
 	},
 	"code": func(language, content string) string {
 		return fmt.Sprintf("```%s\n%s\n```", language, content)
+	},
+	"conventionalCommitBump": func(v string) (string, error) {
+		f, err := os.Open(gitCommitMsgFile)
+		if err != nil {
+			return "", err
+		}
+
+		b, err := io.ReadAll(f)
+		if err != nil {
+			return "", err
+		}
+
+		semverF, err := commit.ParseConventionalCommit(b)
+		if err != nil {
+			return "", fmt.Errorf("failed to parse commit as conventional: %w", err)
+		}
+
+		sv, err := semver.NewVersion(v)
+		if err != nil {
+			return "", fmt.Errorf("failed to parse version as semantic version: %w", err)
+		}
+
+		return semverF(sv), nil
 	},
 	"truncate": strings.TrimSpace,
 }
