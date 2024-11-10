@@ -56,11 +56,15 @@ You can start the installation by running `make start`
 Find all releases [here](https://github.com/FalcoSuessgott/mdtmpl/releases) or simply download the latest by running:
 
 ```bash
+## curl
 version=$(curl https://api.github.com/repos/falcosuessgott/mdtmpl/releases/latest -s | jq .name -r)
 curl -OL "https://github.com/FalcoSuessgott/mdtmpl/releases/download/${version}/mdtmpl_$(uname)_$(uname -m).tar.gz"
 tar xzf mdtmpl_$(uname)_$(uname -m).tar.gz
 chmod u+x mdtmpl
 ./mdtmpl version
+
+## brew
+brew install falcosuessgott/tap/mdtmpl
 ```
 
 # Usage
