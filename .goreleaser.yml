@@ -58,3 +58,18 @@ changelog:
       order: 400
     - title: Other work
       order: 9999
+
+brews:
+  - name: mdtmpl
+    repository:
+      owner: FalcoSuessgott
+      name: homebrew-tap
+      branch: main
+      token: "{{ .Env.HOMEBREW_TAP }}"
+    directory: Formula
+    homepage: https://github.com/FalcoSuessgott/mdtmpl
+    description: "mdtpl"
+    install: |
+      bin.install "mdtmpl"
+    test: |
+      system "#{bin}/mdtmpl"
