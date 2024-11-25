@@ -8,7 +8,7 @@ require (
 	github.com/caarlos0/env/v11 v11.2.2
 	github.com/leodido/go-conventionalcommits v0.12.0
 	github.com/spf13/cobra v1.8.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 )
 
 require (
