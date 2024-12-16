@@ -1,11 +1,15 @@
 package cmd
 
 import (
+	"bufio"
+	"bytes"
 	"fmt"
+	"io"
 	"log"
 	"os"
+	"regexp"
 
-	"github.com/FalcoSuessgott/mdtmpl/pkg/parser"
+	"github.com/FalcoSuessgott/mdtmpl/pkg/template"
 	"github.com/caarlos0/env/v11"
 	"github.com/spf13/cobra"
 )
@@ -15,6 +19,8 @@ const (
 	defaultTemplateFile = "README.md.tmpl"
 	defaultOutputFile   = "README.md"
 )
+
+const commentRegex = `<!---\s*(.*?)\s*--->`
 
 var Version string
 
@@ -61,7 +67,7 @@ func NewRootCmd() *cobra.Command {
 				_ = f.Close()
 			}()
 
-			res, err := parser.Parse(f)
+			res, err := parse(f, template.WithTemplateFile(o.TemplateFile))
 			if err != nil {
 				return fmt.Errorf("cannot parse config %s: %w", o.TemplateFile, err)
 			}
@@ -100,4 +106,37 @@ func Execute() error {
 	}
 
 	return nil
+}
+
+func parse(r io.Reader, opts ...template.RendererOptions) ([]byte, error) {
+	var resultFile bytes.Buffer
+
+	re := regexp.MustCompile(commentRegex)
+
+	ln := 1
+
+	scanner := bufio.NewScanner(r)
+	for scanner.Scan() {
+		if re.MatchString(scanner.Text()) {
+			resultFile.Write(scanner.Bytes())
+			resultFile.WriteString("\n")
+
+			b := regexp.MustCompile(commentRegex).FindStringSubmatch(scanner.Text())[1]
+
+			result, err := template.Render([]byte(b), nil, opts...)
+			if err != nil {
+				return nil, fmt.Errorf("cannot render template at line %d: %w", ln, err)
+			}
+
+			resultFile.Write(result.Bytes())
+			resultFile.WriteString("\n")
+		} else {
+			resultFile.Write(scanner.Bytes())
+			resultFile.WriteString("\n")
+		}
+
+		ln++
+	}
+
+	return resultFile.Bytes(), nil
 }

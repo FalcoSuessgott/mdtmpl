@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FalcoSuessgott/mdtmpl/pkg/parser"
 	"github.com/stretchr/testify/require"
 )
 
@@ -60,7 +59,7 @@ This is another template kuberbernetes-v1.0.0
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			s := strings.NewReader(tc.tmpl)
-			res, err := parser.Parse(s)
+			res, err := parse(s)
 
 			if tc.err {
 				require.Error(t, err)
