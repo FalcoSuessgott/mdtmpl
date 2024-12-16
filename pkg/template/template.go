@@ -6,12 +6,14 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 	"text/template"
 
 	"github.com/FalcoSuessgott/mdtmpl/pkg/commit"
 	"github.com/Masterminds/semver/v3"
 	"github.com/Masterminds/sprig/v3"
+	"github.com/acarl005/stripansi"
 )
 
 const (
@@ -81,7 +83,34 @@ var funcMap template.FuncMap = map[string]any{
 
 		return v, nil
 	},
-	"truncate": strings.TrimSpace,
+	"toc": func(p string) (string, error) {
+		// Read the markdown file
+		out, err := os.ReadFile(p)
+		if err != nil {
+			return "", fmt.Errorf("failed to read file: %v", err)
+		}
+
+		// Regular expression to match markdown headings
+		re := regexp.MustCompile(`(?m)^(#{1,6})\s+(.*)`)
+
+		// Find all headings
+		matches := re.FindAllStringSubmatch(string(out), -1)
+
+		// Generate the table of contents
+		var toc strings.Builder
+		toc.WriteString("# Table of Contents\n\n")
+
+		for _, match := range matches {
+			level := len(match[1])
+			heading := match[2]
+			anchor := strings.ToLower(strings.ReplaceAll(heading, " ", "-"))
+			toc.WriteString(fmt.Sprintf("%s- [%s](#%s)\n", strings.Repeat("  ", level-1), heading, anchor))
+		}
+
+		return toc.String(), nil
+	},
+	"truncate":  strings.TrimSpace,
+	"stripansi": stripansi.Strip,
 }
 
 // Render renders the given content using the sprig template functions.

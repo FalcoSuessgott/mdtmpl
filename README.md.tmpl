@@ -1,6 +1,9 @@
 # mdtmpl
 <!--- {{ file "docs/intro.tmpl" }} --->
 
+## ToC
+<!--- {{ toc "README.md" }} --->
+
 # Installation
 Find all releases [here](https://github.com/FalcoSuessgott/mdtmpl/releases) or simply download the latest by running:
 
@@ -21,5 +24,5 @@ brew install falcosuessgott/tap/mdtmpl
 
 # pre-commit hook
 Add the following config to your `.pre-commit-config.yaml` file and adjust the `args` to your needs.
-Mae sure to run `pre-commit install` and `pre-commit autoupdate` to stay on the last version:
+Make sure to run `pre-commit install` and `pre-commit autoupdate` to stay on the last version:
 <!--- {{ tmpl "docs/pre-commit.tmpl" | truncate | code "yaml" }} --->
