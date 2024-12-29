@@ -17,8 +17,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: make docgen
-
       - name: Configure Git Credentials
         run: |
           git config user.name github-actions[bot]
