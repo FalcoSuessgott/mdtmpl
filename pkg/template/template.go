@@ -6,12 +6,14 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 	"text/template"
 
 	"github.com/FalcoSuessgott/mdtmpl/pkg/commit"
 	"github.com/Masterminds/semver/v3"
 	"github.com/Masterminds/sprig/v3"
+	"github.com/acarl005/stripansi"
 )
 
 const (
@@ -81,12 +83,31 @@ var funcMap template.FuncMap = map[string]any{
 
 		return v, nil
 	},
-	"truncate": strings.TrimSpace,
+	"truncate":  strings.TrimSpace,
+	"stripansi": stripansi.Strip,
+}
+
+type RendererOptions func(*Renderer)
+
+type Renderer struct {
+	tmplFile string
+}
+
+func WithTemplateFile(f string) RendererOptions {
+	return func(p *Renderer) {
+		p.tmplFile = f
+	}
 }
 
 // Render renders the given content using the sprig template functions.
 // nolint: funlen, cyclop
-func Render(content []byte, vars interface{}) (bytes.Buffer, error) {
+func Render(content []byte, vars interface{}, opts ...RendererOptions) (bytes.Buffer, error) {
+	var r Renderer
+
+	for _, opt := range opts {
+		opt(&r)
+	}
+
 	var buf bytes.Buffer
 
 	tpl, err := template.New("template").
@@ -104,7 +125,7 @@ func Render(content []byte, vars interface{}) (bytes.Buffer, error) {
 				return "", err
 			}
 
-			res, err := Render(b, nil)
+			res, err := Render(b, nil, opts...)
 			if err != nil {
 				return "", fmt.Errorf("failed to render template: %w", err)
 			}
@@ -134,12 +155,37 @@ func Render(content []byte, vars interface{}) (bytes.Buffer, error) {
 				m[parts[0]] = parts[1]
 			}
 
-			res, err := Render(b, m)
+			res, err := Render(b, m, opts...)
 			if err != nil {
 				return "", fmt.Errorf("failed to render template: %w", err)
 			}
 
 			return res.String(), nil
+		},
+		"toc": func() (string, error) {
+			// Read the markdown file
+			out, err := os.ReadFile(r.tmplFile)
+			if err != nil {
+				return "", fmt.Errorf("failed to read file %s: %w", r.tmplFile, err)
+			}
+
+			// Regular expression to match markdown headings
+			re := regexp.MustCompile(`(?m)^(#{1,6})\s+(.*)`)
+
+			// Find all headings
+			matches := re.FindAllStringSubmatch(string(out), -1)
+
+			// Generate the table of contents
+			var toc strings.Builder
+
+			for _, match := range matches {
+				level := len(match[1])
+				heading := match[2]
+				anchor := strings.ToLower(strings.ReplaceAll(heading, " ", "-"))
+				toc.WriteString(fmt.Sprintf("%s- [%s](#%s)\n", strings.Repeat("  ", level-1), heading, anchor))
+			}
+
+			return toc.String(), nil
 		},
 	}).
 		Parse(string(content))
