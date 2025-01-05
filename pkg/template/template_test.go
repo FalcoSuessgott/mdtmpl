@@ -53,6 +53,11 @@ func TestTemplateFuncMap(t *testing.T) {
 			exp:  "```bash\n" + "hallo\n" + "```",
 		},
 		{
+			name: "hook",
+			tmpl: `{{ hook "echo hallo" }}`,
+			exp:  "",
+		},
+		{
 			name: "toc",
 			opts: []RendererOptions{WithTemplateFile("testdata/toc.md")},
 			tmpl: `# ToC

@@ -39,7 +39,7 @@ Furthermore, the following functions are also available:
     ```
 
 ### `exec "<command>"`
-> Executes the given command
+> Executes a given command and returns the output and an error (if any)
 
 !!! tip
     `truncate` removes any trailing empty lines. Useful after `exec`
@@ -54,6 +54,19 @@ Furthermore, the following functions are also available:
     ```bash
     hello world
     ```
+
+### `hook "<command>"`
+> Executes a given command and returns an error (if any)
+
+!!! tip
+    `hook` is useful for setting things up or commands that produce some resources, such as images that you want to include.
+
+=== "`README.md.tmpl`"
+    ```yaml
+    <!--- {{ hook "docker start vault" }} --->
+    ```
+
+=== "`README.md`"
 
 ### `file "<path>"`
 > Includes the content of the given file
