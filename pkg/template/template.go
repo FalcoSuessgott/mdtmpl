@@ -37,6 +37,8 @@ var funcMap template.FuncMap = map[string]any{
 	},
 	"exec": func(command string) (string, error) {
 		cmd := exec.Command("sh", "-c", command)
+		cmd.Env = os.Environ()
+		cmd.Dir = os.Getenv("PWD")
 
 		out, err := cmd.Output()
 		if err != nil {
@@ -44,6 +46,18 @@ var funcMap template.FuncMap = map[string]any{
 		}
 
 		return string(out), nil
+	},
+	"hook": func(command string) (string, error) {
+		cmd := exec.Command("sh", "-c", command)
+		cmd.Env = os.Environ()
+		cmd.Dir = os.Getenv("PWD")
+
+		_, err := cmd.Output()
+		if err != nil {
+			return "", err
+		}
+
+		return "", nil
 	},
 	"code": func(language, content string) string {
 		return fmt.Sprintf("```%s\n%s\n```", language, content)
