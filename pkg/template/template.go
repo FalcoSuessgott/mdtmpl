@@ -4,16 +4,19 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"text/template"
 
 	"github.com/FalcoSuessgott/mdtmpl/pkg/commit"
 	"github.com/Masterminds/semver/v3"
-	"github.com/Masterminds/sprig/v3"
 	"github.com/acarl005/stripansi"
+	"github.com/go-sprout/sprout"
+	"github.com/go-sprout/sprout/group/all"
 )
 
 const (
@@ -34,6 +37,43 @@ var funcMap template.FuncMap = map[string]any{
 		}
 
 		return string(b), err
+	},
+	"fileHTTP": func(url string) (string, error) {
+		//nolint: gosec
+		resp, err := http.Get(url)
+		if err != nil {
+			return "", err
+		}
+		defer resp.Body.Close()
+
+		b, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return "", err
+		}
+
+		return string(b), nil
+	},
+	"filesInDir": func(dir string, pattern string) ([]string, error) {
+		var matchedFiles []string
+
+		err := filepath.WalkDir(dir, func(path string, d os.DirEntry, err error) error {
+			if err != nil {
+				return fmt.Errorf("error accessing path %q: %w", path, err)
+			}
+			if !d.IsDir() {
+				matched, err := filepath.Match(pattern, filepath.Base(path))
+				if err != nil {
+					return fmt.Errorf("error matching pattern %q: %w", pattern, err)
+				}
+				if matched {
+					matchedFiles = append(matchedFiles, path)
+				}
+			}
+
+			return nil
+		})
+
+		return matchedFiles, err
 	},
 	"exec": func(command string) (string, error) {
 		cmd := exec.Command("sh", "-c", command)
@@ -118,6 +158,11 @@ func WithTemplateFile(f string) RendererOptions {
 func Render(content []byte, vars interface{}, opts ...RendererOptions) (bytes.Buffer, error) {
 	var r Renderer
 
+	handler := sprout.New()
+	if err := handler.AddGroups(all.RegistryGroup()); err != nil {
+		return bytes.Buffer{}, fmt.Errorf("failed to add sprout groups: %w", err)
+	}
+
 	for _, opt := range opts {
 		opt(&r)
 	}
@@ -126,82 +171,72 @@ func Render(content []byte, vars interface{}, opts ...RendererOptions) (bytes.Bu
 
 	tpl, err := template.New("template").
 		Option("missingkey=error").
-		Funcs(sprig.FuncMap()).Funcs(funcMap).Funcs(template.FuncMap{
-		// we define tmpl here so we dont have a cyclic dependency
-		"tmpl": func(file string) (string, error) {
-			f, err := os.Open(file)
-			if err != nil {
-				return "", err
-			}
-
-			b, err := io.ReadAll(f)
-			if err != nil {
-				return "", err
-			}
-
-			res, err := Render(b, nil, opts...)
-			if err != nil {
-				return "", fmt.Errorf("failed to render template: %w", err)
-			}
-
-			return res.String(), nil
-		},
-		"tmplWithVars": func(file string, vars ...string) (string, error) {
-			f, err := os.Open(file)
-			if err != nil {
-				return "", err
-			}
-
-			b, err := io.ReadAll(f)
-			if err != nil {
-				return "", err
-			}
-
-			m := map[string]interface{}{}
-
-			for _, s := range vars {
-				parts := strings.Split(s, "=")
-				//nolint: mnd
-				if len(parts) != 2 {
-					return "", fmt.Errorf("invalid variable format: %s", s)
+		Funcs(handler.Build()).
+		Funcs(funcMap).
+		Funcs(template.FuncMap{
+			// we define tmpl here so we dont have a cyclic dependency
+			"tmpl": func(file string) (string, error) {
+				f, err := os.Open(file)
+				if err != nil {
+					return "", err
 				}
 
-				m[parts[0]] = parts[1]
-			}
+				b, err := io.ReadAll(f)
+				if err != nil {
+					return "", err
+				}
 
-			res, err := Render(b, m, opts...)
-			if err != nil {
-				return "", fmt.Errorf("failed to render template: %w", err)
-			}
+				res, err := Render(b, nil, opts...)
+				if err != nil {
+					return "", fmt.Errorf("failed to render template: %w", err)
+				}
 
-			return res.String(), nil
-		},
-		"toc": func() (string, error) {
-			// Read the markdown file
-			out, err := os.ReadFile(r.tmplFile)
-			if err != nil {
-				return "", fmt.Errorf("failed to read file %s: %w", r.tmplFile, err)
-			}
+				return res.String(), nil
+			},
+			"tmplWithVars": func(file string, v interface{}) (string, error) {
+				f, err := os.Open(file)
+				if err != nil {
+					return "", err
+				}
 
-			// Regular expression to match markdown headings
-			re := regexp.MustCompile(`(?m)^(#{1,6})\s+(.*)`)
+				b, err := io.ReadAll(f)
+				if err != nil {
+					return "", err
+				}
 
-			// Find all headings
-			matches := re.FindAllStringSubmatch(string(out), -1)
+				res, err := Render(b, v, opts...)
+				if err != nil {
+					return "", fmt.Errorf("failed to render template: %w", err)
+				}
 
-			// Generate the table of contents
-			var toc strings.Builder
+				return res.String(), nil
+			},
+			"toc": func() (string, error) {
+				// Read the markdown file
+				out, err := os.ReadFile(r.tmplFile)
+				if err != nil {
+					return "", fmt.Errorf("failed to read file %s: %w", r.tmplFile, err)
+				}
 
-			for _, match := range matches {
-				level := len(match[1])
-				heading := match[2]
-				anchor := strings.ToLower(strings.ReplaceAll(heading, " ", "-"))
-				toc.WriteString(fmt.Sprintf("%s- [%s](#%s)\n", strings.Repeat("  ", level-1), heading, anchor))
-			}
+				// Regular expression to match markdown headings
+				re := regexp.MustCompile(`(?m)^(#{1,6})\s+(.*)`)
 
-			return toc.String(), nil
-		},
-	}).
+				// Find all headings
+				matches := re.FindAllStringSubmatch(string(out), -1)
+
+				// Generate the table of contents
+				var toc strings.Builder
+
+				for _, match := range matches {
+					level := len(match[1])
+					heading := match[2]
+					anchor := strings.ToLower(strings.ReplaceAll(heading, " ", "-"))
+					toc.WriteString(fmt.Sprintf("%s- [%s](#%s)\n", strings.Repeat("  ", level-1), heading, anchor))
+				}
+
+				return toc.String(), nil
+			},
+		}).
 		Parse(string(content))
 	if err != nil {
 		return buf, err

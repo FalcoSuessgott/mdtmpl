@@ -15,15 +15,14 @@ linters:
     - nolintlint
     - wrapcheck
     - depguard
-    - gomnd
     - err113
     - intrange
     - copyloopvar
     - gochecknoglobals
     - revive
-    - execinquery
     - godox
     - tagalign
     - tagliatelle
     - gomoddirectives
     - dupword
+    - exportloopref
