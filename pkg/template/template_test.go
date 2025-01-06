@@ -97,9 +97,10 @@ HELLO!HELLO!HELLO!HELLO!HELLO!
 		{
 			name: "tmpl with vars",
 			tmpl: `This is text
-{{ tmplWithVars "./testdata/tmpl-vars.tmpl" "Var=Kubernetes" }}`,
+{{ tmplWithVars "./testdata/tmpl-vars.tmpl" (file "./testdata/values.yml" | fromYAML) }}`,
 			exp: `This is text
-KUBERNETESKUBERNETESKUBERNETESKUBERNETESKUBERNETES
+username=admin
+password=password
 `,
 		},
 	}

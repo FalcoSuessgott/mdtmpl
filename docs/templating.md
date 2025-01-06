@@ -20,7 +20,7 @@ For example: `<!--- {{ "hello!" | upper | repeat 5 }} --->` will result in:
 `HELLO!HELLO!HELLO!HELLO!HELLO!`.
 
 ## Template Functions
-`mdtmpl` includes all [`sprig`](http://masterminds.github.io/sprig/) and [Go`s predefined template functions](https://pkg.go.dev/text/template#hdr-Functions).
+`mdtmpl` includes all [`sprout`](https://docs.atom.codes/sprout/registries/list-of-all-registries) and [Go`s predefined template functions](https://pkg.go.dev/text/template#hdr-Functions).
 
 Furthermore, the following functions are also available:
 
@@ -72,7 +72,7 @@ Furthermore, the following functions are also available:
 > Includes the content of the given file
 
 ```yaml
-# settings.yaml
+# settings.yml
 settings:
     basic_auth: false
 ```
@@ -88,6 +88,39 @@ settings:
     settings:
         basic_auth: false
     ```
+
+### `fileHTTP "<url>"`
+> Includes the content of the given url
+
+```yaml
+# settings.yml
+settings:
+    basic_auth: false
+```
+
+=== "`README.md.tmpl`"
+    ```c
+    <!--- {{ fileHTTP "https://github.com/settings.yml" | code "yaml" }} --->
+    ```
+
+=== "`README.md`"
+    <!--- {{ fileHTTP "https://github.com/settings.yml" | code "yaml" }} --->
+    ```yaml
+    settings:
+        basic_auth: false
+    ```
+
+### `filesInDir "<dir>" "<glob-pattern">`
+> Returns the paths of all matching files in the specified directory
+
+=== "`README.md.tmpl`"
+    ```c
+    <!--- {{ filesInDir "." "*.yml" }} --->
+    ```
+
+=== "`README.md`"
+    <!--- {{ filesInDir "." "*.yml" }} --->
+    [.github/dependabot.yml .github/workflows/lint.yml .github/workflows/mkdocs.yml .github/workflows/release.yml .github/workflows/test.yml .golang-ci.yml .goreleaser.yml cmd/testdata/cfg.yml mkdocs.yml pkg/template/testdata/values.yml]
 
 ### `tmpl "<template-file>"`
 > Includes the rendered content of the given template
@@ -106,8 +139,14 @@ This is a test {{ exec "echo template" }}
     <!--- {{ tmpl "docs/template.tmpl" }} --->
     This is a test template
 
-### `tmplWithVars "<template-file>" "<key=<value>" "<key=<value>"`
-> Includes the rendered content of the given template
+### `tmplWithVars "<template-file>" <values>`
+> Renders a given template with the specified template values
+
+```yaml
+# values.yml
+name: kubernetes
+version: v1.0.0
+```
 
 ```yaml
 # docs/template.tmpl
@@ -116,12 +155,12 @@ This is another template {{ .name }}-{{ .version }}
 
 === "`README.md.tmpl`"
     ```c
-    <!--- {{ tmplWithVars "docs/template.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->
+    <!--- {{ tmplWithVars "docs/template.tmpl" (file "values.yml" | fromYAML) }} --->
     ```
 
 === "`README.md`"
-    <!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" }} --->
-    This is another template kuberbernetes-v1.0.0
+    <!--- {{ tmplWithVars "docs/template.tmpl" (file "values.yml" | fromYAML) }} --->
+    This is another template kubernetes-v1.0.0
 
 ### `stripansi "<content>"`
 > Strips any Color Codes from a given content

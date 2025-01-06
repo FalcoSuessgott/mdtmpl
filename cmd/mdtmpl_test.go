@@ -17,8 +17,8 @@ func TestParseConfig(t *testing.T) {
 	}{
 		{
 			name: "simple",
-			tmpl: `<!--- {{ "hello!" | upper | repeat 5 }} --->`,
-			exp: `<!--- {{ "hello!" | upper | repeat 5 }} --->
+			tmpl: `<!--- {{ "hello!" | toUpper | repeat 5 }} --->`,
+			exp: `<!--- {{ "hello!" | toUpper | repeat 5 }} --->
 HELLO!HELLO!HELLO!HELLO!HELLO!
 `,
 		},
@@ -49,9 +49,11 @@ This is a test template
 		},
 		{
 			name: "tmplWithVars",
-			tmpl: `<!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" | truncate }} --->`,
-			exp: `<!--- {{ tmplWithVars "testdata/template.tmpl" "version=v1.0.0" "name=kuberbernetes" | truncate }} --->
-This is another template kuberbernetes-v1.0.0
+			tmpl: `<!--- {{ tmplWithVars "testdata/template.tmpl" (file "./testdata/values.yml" | fromYAML) }} --->`,
+			exp: `<!--- {{ tmplWithVars "testdata/template.tmpl" (file "./testdata/values.yml" | fromYAML) }} --->
+username=admin
+password=password
+
 `,
 		},
 	}
