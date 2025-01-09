@@ -1,4 +1,8 @@
 # mdtmpl
+<img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/falcosuessgott/mdtmpl/total">
+<img alt="Docker Pulls" src="https://img.shields.io/docker/pulls/falcosuessgott/mdtmpl">
+
+
 Tired of copy-pasting your example configurations and command outputs into your README?
 
 `mdtmpl` is a dead-simple little CLI tool that runs instructions defined in [Markdown comments](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#hiding-content-with-comments), such as `<!--- {{ my markdown comment }} --->`.
