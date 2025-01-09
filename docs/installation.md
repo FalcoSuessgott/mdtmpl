@@ -14,3 +14,8 @@ chmod u+x mdtmpl
 ```bash
 brew install falcosuessgott/tap/mdtmpl
 ```
+
+## docker
+```bash
+docker run falcosuessgott/mdtmpl
+```
