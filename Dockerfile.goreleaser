@@ -1,0 +1,6 @@
+FROM alpine:3.21.2
+
+# binary is built by goreleaser and just copied to the image
+COPY mdtmpl /usr/bin/mdmtpl
+
+ENTRYPOINT ["/usr/bin/mdtmpl"]
