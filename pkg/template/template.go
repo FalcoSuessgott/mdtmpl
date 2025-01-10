@@ -139,6 +139,9 @@ var funcMap template.FuncMap = map[string]any{
 	},
 	"truncate":  strings.TrimSpace,
 	"stripansi": stripansi.Strip,
+	"collapsile": func(summary, content string) string {
+		return fmt.Sprintf("<details>\n<summary>%s</summary>\n\n%s\n\n</details>", summary, content)
+	},
 }
 
 type RendererOptions func(*Renderer)

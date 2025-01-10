@@ -180,6 +180,29 @@ This is another template {{ .name }}-{{ .version }}
     cf4f9cec8faa   registry:2   "/entrypoint.sh /etc…"   7 weeks ago   Up 29 minutes   0.0.0.0:5000->5000/tcp, :::5000->5000/tcp   registry
     ```
 
+### `collapsile "summary" "<content>"`
+> Creates a [collapsible](https://gist.github.com/pierrejoubert73/902cc94d79424356a8d20be2b382e1ab) section wit the given summary and content.
+
+=== "`README.md.tmpl`"
+    ```c
+    <!--- {{ collapsile "output" (exec "make" | stripansi | truncate | code "bash" ) }} --->
+    ```
+
+=== "`README.md`"
+    <!--- {{ collapsile "output" (exec "make" | stripansi | truncate | code "bash" ) }} --->
+    <details>
+    <summary>output</summary>
+
+    ```bash
+    fmt                            format go files
+    help                           list makefile targets
+    lint                           lint go files
+    test                           display test coverage
+    ```
+
+    </details>
+
+
 ### `toc`
 > Inserts a Markdown Table of Content
 

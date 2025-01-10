@@ -29,6 +29,7 @@ type Options struct {
 	OutputFile   string `env:"OUTPUT_FILE"`
 	DryRun       bool   `env:"DRY_RUN"`
 	Force        bool   `env:"FORCE"`
+	Init         bool   `env:"INIT"`
 	Version      bool   `env:"VERSION"`
 }
 
@@ -39,6 +40,11 @@ func defaultOpts() *Options {
 	}
 }
 
+var initTemplate = `# ToC
+<!--- {{ toc }} --->
+`
+
+// nolint: cyclop, funlen
 func NewRootCmd() *cobra.Command {
 	o := defaultOpts()
 
@@ -56,6 +62,17 @@ func NewRootCmd() *cobra.Command {
 				fmt.Println(Version)
 
 				return nil
+			}
+
+			if o.Init {
+				if _, err := os.Stat(o.TemplateFile); err == nil && !o.Force {
+					return fmt.Errorf("template file %s already exists. Use --force to overwrite ", o.TemplateFile)
+				}
+
+				//nolint:gosec, mnd
+				if err := os.WriteFile(o.TemplateFile, []byte(initTemplate), 0o644); err != nil {
+					return fmt.Errorf("cannot write to %s: %w", o.TemplateFile, err)
+				}
 			}
 
 			f, err := os.Open(o.TemplateFile)
@@ -79,7 +96,7 @@ func NewRootCmd() *cobra.Command {
 			}
 
 			if _, err := os.Stat(o.OutputFile); err == nil && !o.Force {
-				return fmt.Errorf("output file %s already exists, use -f to overwrite", o.OutputFile)
+				return fmt.Errorf("output file %s already exists. Use -f to overwrite", o.OutputFile)
 			}
 
 			//nolint:gosec, mnd
@@ -95,6 +112,8 @@ func NewRootCmd() *cobra.Command {
 	cmd.Flags().StringVarP(&o.OutputFile, "output", "o", o.OutputFile, "path to the output file (env: MDTMPL_OUTPUT_FILE)")
 	cmd.Flags().BoolVarP(&o.Force, "force", "f", o.Force, "overwrite output file (env: MDTMPL_FORCE)")
 	cmd.Flags().BoolVarP(&o.DryRun, "dry-run", "d", o.DryRun, "dry run, print output to stdout (env: MDTMPL_DRY_RUN)")
+	cmd.Flags().BoolVarP(&o.Init, "init", "i", o.Init, "Initialize a starting README.md.tmpl (env: MDTMPL_INIT)")
+
 	cmd.Flags().BoolVar(&o.Version, "version", o.Version, "print version (env: MDTMPL_VERSION)")
 
 	return cmd

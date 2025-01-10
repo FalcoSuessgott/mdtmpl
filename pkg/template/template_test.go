@@ -103,6 +103,18 @@ username=admin
 password=password
 `,
 		},
+		{
+			name: "collapsile",
+			tmpl: `{{ collapsile "details" (code "bash" "echo hallo") }}`,
+			exp: `<details>
+<summary>details</summary>
+
+` + "```bash" + `
+echo hallo
+` + "```" + `
+
+</details>`,
+		},
 	}
 
 	for _, tc := range testcases {
