@@ -13,10 +13,8 @@
       
       
       
-        <link rel="prev" href="../templating/">
+        <link rel="prev" href="../pre-commit-hook/">
       
-      
-        <link rel="next" href="../tips/">
       
       
       <link rel="icon" href="../assets/favicon.ico">
@@ -24,7 +22,7 @@
     
     
       
-        <title>pre-commit hook - mdtmpl</title>
+        <title>Tips & Tricks - mdtmpl</title>
       
     
     
@@ -76,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pre-commit-hook" class="md-skip">
+        <a href="#tips-tricks" class="md-skip">
           Skip to content
         </a>
       
@@ -111,7 +109,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              pre-commit hook
+              Tips &amp; Tricks
             
           </span>
         </div>
@@ -278,11 +276,9 @@
         
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="./" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="../pre-commit-hook/" class="md-tabs__link">
         
   
     
@@ -297,9 +293,11 @@
         
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../tips/" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
         
   
     
@@ -445,6 +443,26 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../pre-commit-hook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    pre-commit hook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -457,28 +475,18 @@
         
       
       
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
   
   <span class="md-ellipsis">
-    pre-commit hook
+    Tips &amp; Tricks
   </span>
   
 
-      </a>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../tips/" class="md-nav__link">
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -487,6 +495,35 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -511,6 +548,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workflow
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -524,7 +578,7 @@
                   
 
   
-    <a href="https://github.com/FalcoSuessgott/mdtmpl/edit/master/docs/pre-commit-hook.md" title="Edit this page" class="md-content__button md-icon">
+    <a href="https://github.com/FalcoSuessgott/mdtmpl/edit/master/docs/tips.md" title="Edit this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75z"/></svg>
     </a>
@@ -532,16 +586,11 @@
   
 
 
-<h1 id="pre-commit-hook">pre-commit hook<a class="headerlink" href="#pre-commit-hook" title="Permanent link">&para;</a></h1>
-<p>Add the following config to your <code>.pre-commit-config.yaml</code> file and adjust the <code>args</code> to your needs.
-Mae sure to run <code>pre-commit install</code> and <code>pre-commit autoupdate</code> to stick to the latest version:
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">repos</span><span class="p">:</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">repo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/FalcoSuessgott/mdtmpl</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">rev</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.0.6</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">hooks</span><span class="p">:</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mdtmpl</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-t=README.md.tmpl</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-f</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-o=README.md</span><span class="p p-Indicator">]</span>
-</span></code></pre></div></p>
+<h1 id="tips-tricks">Tips &amp; Tricks<a class="headerlink" href="#tips-tricks" title="Permanent link">&para;</a></h1>
+<h2 id="workflow">Workflow<a class="headerlink" href="#workflow" title="Permanent link">&para;</a></h2>
+<p>Personally, I use <a href="https://github.com/eradman/entr"><code>entr</code></a> to automatically run <code>mdtmpl</code> every time my template file (e.g <code>README.md.tmpl</code>) changes. Simply output the <strong>filenames</strong> you want to watch on <code>STDOUT</code> and pipe them into <code>entr</code> with the command to be executed at file change:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt;<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>README.md.tmpl<span class="w"> </span><span class="p">|</span><span class="w"> </span>entr<span class="w"> </span>mdtmpl<span class="w"> </span>-f
+</span></code></pre></div>
 
 
 
@@ -562,7 +611,7 @@ Mae sure to run <code>pre-commit install</code> and <code>pre-commit autoupdate<
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">December 29, 2024</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">January 10, 2025</span>
   </span>
 
     
@@ -613,7 +662,7 @@ Mae sure to run <code>pre-commit install</code> and <code>pre-commit autoupdate<
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../templating/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Templating">
+          <a href="../pre-commit-hook/" class="md-footer__link md-footer__link--prev" aria-label="Previous: pre-commit hook">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -623,27 +672,11 @@ Mae sure to run <code>pre-commit install</code> and <code>pre-commit autoupdate<
                 Previous
               </span>
               <div class="md-ellipsis">
-                Templating
+                pre-commit hook
               </div>
             </div>
           </a>
         
-        
-          
-          <a href="../tips/" class="md-footer__link md-footer__link--next" aria-label="Next: Tips &amp;amp; Tricks">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                Tips &amp; Tricks
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
         
       </nav>
     
