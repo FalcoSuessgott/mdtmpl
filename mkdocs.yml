@@ -20,6 +20,7 @@ nav:
   - usage.md
   - templating.md
   - pre-commit-hook.md
+  - tips.md
 
 markdown_extensions:
   - pymdownx.superfences:
