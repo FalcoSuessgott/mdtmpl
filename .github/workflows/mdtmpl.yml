@@ -1,0 +1,19 @@
+name: mdtmpl
+
+on:
+  pull_request:
+
+# required to commit the specified output file back to the branch
+permissions:
+    contents: write
+
+jobs:
+  mdtmpl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: FalcoSuessgott/mdtmpl-action@v1
+
+      - run: |
+            git status
