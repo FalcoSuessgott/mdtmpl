@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: FalcoSuessgott/mdtmpl-action@v1
+      - uses: FalcoSuessgott/mdtmpl-action@v1.0.0
 
       - run: |
             git status
